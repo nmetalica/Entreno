@@ -1,6 +1,6 @@
 // Guarda la app en el móvil para usarla sin conexión. Cambia VERSION al actualizar los archivos.
-const VERSION = 'v1-2026-10-31';
-const FILES = ['./', 'index.html', 'rutina.html', 'comidas.html', 'manifest.webmanifest', 'icon-180.png', 'icon-192.png', 'icon-512.png', 'icon-512-maskable.png'];
+const VERSION = 'v2-2026-10-31';
+const FILES = ['./', 'index.html', 'rutina.html', 'comidas.html', 'guiado.html', 'medidas.html', 'resumen.html', 'copia.html', 'app.css', 'store.js', 'icons.js', 'plan.js', 'figs.js', 'guiado.js', 'medidas.js', 'resumen.js', 'manifest.webmanifest', 'icon-180.png', 'icon-192.png', 'icon-512.png', 'icon-512-maskable.png'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(VERSION).then(c => c.addAll(FILES)).then(() => self.skipWaiting()));
 });

@@ -13,6 +13,7 @@
 <meta name="theme-color" content="#f2f4fb" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0b0e20" media="(prefers-color-scheme: dark)">
 <style>
+
 :root{--bg:#f2f4fb;--card:#fff;--ink:#141a33;--muted:#5b6185;--line:#e1e4f2;--a:#3550ff;--b:#0b8f80;--c:#e0307a}
 @media (prefers-color-scheme:dark){:root{--bg:#0b0e20;--card:#151a37;--ink:#eef0ff;--muted:#a5aad2;--line:#262c5c;--a:#8494ff;--b:#2fd3bf;--c:#ff6aa6;color-scheme:dark}}
 *{box-sizing:border-box}
@@ -28,12 +29,32 @@ a.big:focus-visible{outline:3px solid var(--a);outline-offset:2px}
 b{font-size:1.2rem}
 small{color:var(--muted);font-size:.9rem}
 .st{font-size:.85rem;text-align:center}
+[hidden]{display:none!important}
+.sec{font-size:.74rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:6px 0 -4px}
+.warnb{background:var(--c);color:#fff;border-radius:20px;padding:14px 18px;text-decoration:none;display:grid;gap:2px}
+.warnb small{color:#fff;opacity:.9}
 </style></head><body><main>
 <div><h1>Entreno</h1><p>Emilio y Breisy · funciona sin conexión</p></div>
+<a class="warnb" id="bk" href="copia.html" hidden><b>Guarda una copia de seguridad</b><small id="bkt"></small></a>
+<a class="big" href="guiado.html"><span class="ic" style="background:var(--a)"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z" /></svg></span><b>Entreno guiado</b><small>Un ejercicio por pantalla, con descanso automático</small></a>
 <a class="big" href="rutina.html"><span class="ic" style="background:var(--a)"><svg viewBox="0 0 24 24"><path d="M17.596 12.768a2 2 0 1 0 2.829-2.829l-1.768-1.767a2 2 0 0 0 2.828-2.829l-2.828-2.828a2 2 0 0 0-2.829 2.828l-1.767-1.768a2 2 0 1 0-2.829 2.829z"/><path d="m2.5 21.5 1.4-1.4"/><path d="m20.1 3.9 1.4-1.4"/><path d="M5.343 21.485a2 2 0 1 0 2.829-2.828l1.767 1.768a2 2 0 1 0 2.829-2.829l-6.364-6.364a2 2 0 1 0-2.829 2.829l1.768 1.767a2 2 0 0 0-2.828 2.829z"/><path d="m9.6 14.4 4.8-4.8"/></svg></span><b>Rutina de Emilio</b><small>1 mes · casa o gimnasio · seguimiento</small></a>
 <a class="big" href="comidas.html"><span class="ic" style="background:var(--b)"><svg viewBox="0 0 24 24"><path d="m15 11-1 9"/><path d="m19 11-4-7"/><path d="M2 11h20"/><path d="m3.5 11 1.6 7.4a2 2 0 0 0 2 1.6h9.8a2 2 0 0 0 2-1.6l1.7-7.4"/><path d="M4.5 15.5h15"/><path d="m5 11 4-7"/><path d="m9 11 1 9"/></svg></span><b>Plan de comidas</b><small>4 semanas · lista de Mercadona · recetas</small></a>
+<p class="sec">Seguimiento</p>
+<a class="big" href="medidas.html"><span class="ic" style="background:var(--b)"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18" /> <path d="m19 8 3 8a5 5 0 0 1-6 0zV7" /> <path d="M3 7h1a17 17 0 0 0 8-2 17 17 0 0 0 8 2h1" /> <path d="m5 8 3 8a5 5 0 0 1-6 0zV7" /> <path d="M7 21h10" /></svg></span><b>Medidas y fotos</b><small>Báscula, cinta métrica y fotos de progreso con guía</small></a>
+<a class="big" href="resumen.html"><span class="ic" style="background:var(--c)"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" /> <path d="M14 2v5a1 1 0 0 0 1 1h5" /> <path d="M10 9H8" /> <path d="M16 13H8" /> <path d="M16 17H8" /></svg></span><b>Resumen para la entrenadora</b><small>Para enseñárselo, imprimirlo o enviarlo</small></a>
+<a class="big" href="copia.html"><span class="ic" style="background:var(--a)"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" /> <path d="m9 12 2 2 4-4" /></svg></span><b>Copia de seguridad</b><small>Guarda tus datos o pásalos a otro móvil</small></a>
 <p class="st" id="st">Comprobando el modo sin conexión…</p>
 </main>
+<script src="store.js"></script>
+<script>
+(function(){try{
+  var b=document.getElementById('bk'),t=document.getElementById('bkt');
+  if(!EN.hasData()) return;
+  var c=EN.get(EN.K.copia,null), d=c&&c.fecha?EN.days(c.fecha.slice(0,10)):null;
+  if(d===null){ t.textContent='Todavía no has guardado ninguna. Tarda un minuto.'; b.hidden=false; }
+  else if(d>=14){ t.textContent='La última fue hace '+d+' días.'; b.hidden=false; }
+}catch(e){}})();
+</script>
 <script>
 var st=document.getElementById('st');
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').then(function(){return navigator.serviceWorker.ready;}).then(function(){st.textContent='Lista para usar sin conexión.';}).catch(function(){st.textContent='Abre esta página con conexión una vez para guardarla en el móvil.';});}

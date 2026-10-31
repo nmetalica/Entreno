@@ -315,7 +315,7 @@ html:not(.js) .ser input:checked+label::before{content:"✓";position:absolute;i
 <meta name="theme-color" content="#0b0e20" media="(prefers-color-scheme: dark)">
 </head>
 <body>
-<a href="./" class="homelink" style="display:inline-flex;align-items:center;gap:6px;margin-top:max(10px,env(safe-area-inset-top,0px));min-height:44px;font:700 15px system-ui,sans-serif;color:inherit;opacity:.7;text-decoration:none">← Inicio</a>
+<nav class="homelink" style="display:flex;gap:16px;flex-wrap:wrap;margin-top:max(10px,env(safe-area-inset-top,0px))" aria-label="Otras páginas"><a href="./" style="display:inline-flex;align-items:center;gap:6px;min-height:44px;font:700 15px system-ui,sans-serif;color:inherit;text-decoration:none;opacity:.7">← Inicio</a><a href="guiado.html" style="display:inline-flex;align-items:center;gap:6px;min-height:44px;font:700 15px system-ui,sans-serif;color:inherit;text-decoration:none">▶ Entreno guiado</a><a href="resumen.html" style="display:inline-flex;align-items:center;gap:6px;min-height:44px;font:700 15px system-ui,sans-serif;color:inherit;text-decoration:none;opacity:.7">Resumen</a></nav>
 
 <input type="radio" name="lugar" id="lg-casa" class="sr" checked><input type="radio" name="lugar" id="lg-gym" class="sr">
 <input type="radio" name="semana" id="wk1" class="sr" checked><input type="radio" name="semana" id="wk2" class="sr"><input type="radio" name="semana" id="wk3" class="sr"><input type="radio" name="semana" id="wk4" class="sr">

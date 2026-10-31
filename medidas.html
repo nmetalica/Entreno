@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>Medidas y fotos · Entreno</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Entreno">
+<meta name="theme-color" content="#f2f4fb" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0b0e20" media="(prefers-color-scheme: dark)">
+<link rel="stylesheet" href="app.css">
+<style>
+.tabs{position:sticky;top:0;z-index:20;background:var(--bg);padding:8px 0;margin:0 -2px}
+.pn{display:grid;gap:14px}
+/* gráficas pequeñas */
+.mg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.mc{background:var(--bg);border-radius:18px;padding:12px;display:grid;gap:4px;min-width:0}
+.mc .t{font-size:.78rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.mc .v{font:800 1.5rem var(--f-num);letter-spacing:-.03em;line-height:1.1}
+.mc .v small{font:700 .8rem var(--f-body);color:var(--muted);letter-spacing:0;margin-left:3px}
+.mc .d{font-size:.85rem;font-weight:800}
+.mc .f{font-size:.74rem;color:var(--muted);display:flex;justify-content:space-between}
+.mc svg.sp{width:100%;height:auto;display:block;overflow:visible}
+.sp .g{stroke:var(--line);stroke-width:1}
+.sp .l{fill:none;stroke:var(--a);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.sp .p{fill:var(--bg);stroke:var(--a);stroke-width:2}
+.sp .e{fill:var(--a)}
+.mc.cb .sp .l{stroke:var(--b)} .mc.cb .sp .p{stroke:var(--b)} .mc.cb .sp .e{fill:var(--b)}
+.mc.cc .sp .l{stroke:var(--c)} .mc.cc .sp .p{stroke:var(--c)} .mc.cc .sp .e{fill:var(--c)}
+.mc.cw .sp .l{stroke:var(--work)} .mc.cw .sp .p{stroke:var(--work)} .mc.cw .sp .e{fill:var(--work)}
+.mc .one{font-size:.8rem;color:var(--muted)}
+.derived{font-weight:800;color:var(--b);min-height:1.5em}
+tr.pick{cursor:pointer} tr.pick:hover td,tr.pick:focus td{background:var(--soft)}
+tr.sel td{background:var(--soft)}
+.how{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;align-items:start}
+.how .i{margin-top:4px;color:var(--a)}
+
+/* fotos */
+.ses{display:grid;gap:10px}
+.ses .h{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.ses .h b{font-size:1.05rem}
+.ses .tag{font-size:.82rem;color:var(--muted);font-weight:700}
+.slots{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.slot{position:relative;aspect-ratio:3/4;border-radius:14px;border:2px dashed var(--line);background:var(--bg);color:var(--muted);padding:0;overflow:hidden;cursor:pointer;display:grid;place-items:center;align-content:center;gap:2px;font:800 .8rem var(--f-body);touch-action:manipulation}
+.slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.slot.has{border:0}
+.slot .lb{position:absolute;left:6px;bottom:6px;background:rgba(0,0,0,.6);color:#fff;border-radius:999px;padding:2px 9px;font-size:.72rem;font-weight:800}
+.slot .i{font-size:1.4rem}
+.cmpw{display:grid;gap:10px}
+.cmp{position:relative;aspect-ratio:3/4;border-radius:18px;overflow:hidden;background:var(--bg);--p:50%;touch-action:pan-y;user-select:none;max-width:420px;margin:0 auto;width:100%}
+.cmp img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cmp img.top{clip-path:inset(0 calc(100% - var(--p)) 0 0)}
+.cmp .hl{position:absolute;top:0;bottom:0;left:var(--p);width:3px;margin-left:-1.5px;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.35)}
+.cmp .tg{position:absolute;top:8px;background:rgba(0,0,0,.6);color:#fff;border-radius:999px;padding:3px 10px;font-size:.78rem;font-weight:800}
+.cmp .tg.l{left:8px} .cmp .tg.r{right:8px}
+.cmp input[type=range]{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;margin:0}
+.cmp .none{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:20px;color:var(--muted);font-weight:700}
+.cmpfoot{font-size:.9rem;color:var(--muted);text-align:center}
+.cmpfoot b{color:var(--ink)}
+
+/* guía de foto */
+.poses{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.pose{display:grid;gap:6px;text-align:center}
+.pose svg{width:100%;height:auto;background:var(--soft);border-radius:16px;display:block}
+.pose b{font-size:.95rem}
+.pose small{color:var(--muted);font-size:.8rem;line-height:1.3}
+.gfig{width:100%;max-width:520px;margin:0 auto;display:block;background:var(--soft);border-radius:18px}
+.bd{fill:var(--a)} .bd2{fill:var(--a);opacity:.5}
+.gl{stroke:var(--muted);stroke-width:1.2;stroke-dasharray:5 4;fill:none}
+.gt{font:700 11px var(--f-body);fill:var(--muted)}
+.gtb{font:800 12px var(--f-body);fill:var(--ink)}
+.gdim{stroke:var(--ink);stroke-width:1.4;fill:none}
+.gfoot{fill:var(--c)}
+.gcone{fill:var(--a);opacity:.12}
+.gconel{stroke:var(--a);stroke-width:1.2;opacity:.5;fill:none}
+ul.ck{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+ul.ck li{display:flex;gap:12px;align-items:flex-start;min-height:44px;padding:6px 0;border-bottom:1px solid var(--line)}
+ul.ck li:last-child{border:0}
+ul.ck input{width:24px;height:24px;margin:1px 0 0;accent-color:var(--b);flex:none}
+ul.ck label{cursor:pointer;flex:1}
+ul.ck label small{display:block;color:var(--muted)}
+ol.n{margin:0;padding:0;list-style:none;counter-reset:n;display:grid;gap:10px}
+ol.n li{counter-increment:n;display:grid;grid-template-columns:30px 1fr;gap:10px;align-items:start}
+ol.n li::before{content:counter(n);width:30px;height:30px;border-radius:50%;background:var(--a);color:var(--on-a);display:grid;place-items:center;font:800 .85rem var(--f-num)}
+ol.n li b{display:block}
+ol.n li span{color:var(--muted);font-size:.93rem}
+
+/* cámara a pantalla completa */
+.cam{position:fixed;inset:0;z-index:90;background:#000;color:#fff;display:grid;grid-template-rows:auto minmax(0,1fr) auto;
+  padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px)}
+.cam button{font-family:var(--f-body)}
+.cam .bar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 12px}
+.cam .ib{width:46px;height:46px;border-radius:50%;border:0;background:rgba(255,255,255,.16);color:#fff;display:grid;place-items:center;font-size:22px;cursor:pointer;touch-action:manipulation}
+.cam .ib:focus-visible,.cam .cb:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.cam .ttl{text-align:center;line-height:1.2} .cam .ttl b{display:block;font-size:1.1rem} .cam .ttl small{opacity:.75}
+.stage{position:relative;justify-self:center;align-self:center;aspect-ratio:3/4;height:100%;max-width:100%;background:#111;overflow:hidden}
+@supports (width:min(1px,2px)){.stage{height:auto;width:min(100vw,calc((100vh - 200px) * .75))}}
+.stage video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.stage video.mir{transform:scaleX(-1)}
+.stage .ov{position:absolute;inset:0;pointer-events:none}
+.stage .ov svg,.stage .ov img{position:absolute;inset:0;width:100%;height:100%;display:block}
+.stage .ov img{object-fit:cover;opacity:.38}
+.stage .ov img.mir{transform:scaleX(-1)}
+.stage img.rev{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.stage .cd{position:absolute;inset:0;display:grid;place-items:center;font:800 7rem var(--f-num);text-shadow:0 4px 24px rgba(0,0,0,.6);pointer-events:none}
+.stage .fl{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none}
+.stage .fl.on{animation:flash .35s ease-out}
+@keyframes flash{from{opacity:.9}to{opacity:0}}
+.stage .lv{position:absolute;left:8px;right:8px;top:8px;display:flex;justify-content:center;pointer-events:none}
+.stage .lv span{background:rgba(0,0,0,.6);border-radius:999px;padding:4px 12px;font-size:.8rem;font-weight:800}
+.stage .lv span.ok{background:#0b8f80}
+.stage .msg{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:24px;font-weight:700;background:#111}
+.cam .foot{display:grid;gap:8px;padding:8px 12px 12px}
+.cam .ovm{display:flex;gap:6px;justify-content:center}
+.cam .ovm button{min-height:38px;padding:0 14px;border-radius:999px;border:2px solid rgba(255,255,255,.35);background:transparent;color:#fff;font-weight:800;font-size:.85rem;cursor:pointer}
+.cam .ovm button[aria-pressed=true]{background:#fff;color:#000;border-color:#fff}
+.cam .acts{display:flex;gap:10px;justify-content:center}
+.cam .cb{flex:1;max-width:240px;min-height:52px;border-radius:999px;border:0;background:#fff;color:#000;font-weight:800;font-size:1rem;cursor:pointer;display:inline-flex;gap:8px;align-items:center;justify-content:center;touch-action:manipulation}
+.cam .cb.g{background:rgba(255,255,255,.16);color:#fff}
+.cam .cb.ok{background:#0b8f80;color:#fff}
+
+.lbx{position:fixed;inset:0;z-index:85;background:rgba(0,0,0,.92);color:#fff;display:grid;grid-template-rows:auto 1fr auto;padding:env(safe-area-inset-top,0px) 12px calc(12px + env(safe-area-inset-bottom,0px))}
+.lbx img{justify-self:center;align-self:center;max-width:100%;max-height:100%;object-fit:contain;min-height:0}
+.lbx .bar{display:flex;justify-content:space-between;align-items:center;padding:8px 0}
+.lbx .acts{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;padding-top:8px}
+.lbx .btn{background:rgba(255,255,255,.14);border-color:transparent;color:#fff}
+.lbx .btn.danger{color:#ffb089}
+</style></head><body>
+<div class="wrap">
+  <header class="top">
+    <a class="back" href="./"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7" /> <path d="M19 12H5" /></svg>Inicio</a>
+    <h1>Medidas y fotos</h1>
+    <p>Apunta lo que marca tu báscula y tu cinta métrica cada dos semanas y haz las mismas fotos. Con la báscula sola no se ve si ganas músculo.</p>
+  </header>
+  <noscript><p class="nojs">Esta página necesita JavaScript. Ábrela desde la app instalada o con Chrome o Safari.</p></noscript>
+
+  <div class="tabs">
+    <div class="seg" role="radiogroup" aria-label="Sección">
+      <input type="radio" name="tab" id="tb-med" checked><label for="tb-med">Medidas</label>
+      <input type="radio" name="tab" id="tb-fotos"><label for="tb-fotos">Fotos</label>
+      <input type="radio" name="tab" id="tb-guia"><label for="tb-guia">Guía de foto</label>
+    </div>
+  </div>
+
+  <!-- ======================= MEDIDAS ======================= -->
+  <div class="pn" id="pn-med">
+    <section class="card" aria-labelledby="h-new">
+      <h2 id="h-new"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18" /> <path d="m19 8 3 8a5 5 0 0 1-6 0zV7" /> <path d="M3 7h1a17 17 0 0 0 8-2 17 17 0 0 0 8 2h1" /> <path d="m5 8 3 8a5 5 0 0 1-6 0zV7" /> <path d="M7 21h10" /></svg><span id="newtitle">Nueva medición</span></h2>
+      <p class="sub" id="editnote" hidden></p>
+      <label class="fld"><span>Fecha</span><input type="date" id="m-fecha"></label>
+      <p class="eyeb">De la báscula inteligente</p>
+      <div class="fgrid c3">
+        <label class="fld"><span>Peso</span><span class="unit"><input id="m-peso" type="text" inputmode="decimal" autocomplete="off" placeholder="—"><b>kg</b></span></label>
+        <label class="fld"><span>Grasa corporal</span><span class="unit"><input id="m-grasa" type="text" inputmode="decimal" autocomplete="off" placeholder="—"><b>%</b></span></label>
+        <label class="fld"><span>Músculo</span><span class="unit"><input id="m-musculo" type="text" inputmode="decimal" autocomplete="off" placeholder="—"><b>kg</b></span></label>
+      </div>
+      <p class="derived" id="derived" aria-live="polite"></p>
+      <p class="eyeb">Con la cinta métrica</p>
+      <div class="fgrid c3">
+        <label class="fld"><span>Cintura</span><span class="unit"><input id="m-cintura" type="text" inputmode="decimal" autocomplete="off" placeholder="—"><b>cm</b></span></label>
+        <label class="fld"><span>Cadera</span><span class="unit"><input id="m-cadera" type="text" inputmode="decimal" autocomplete="off" placeholder="—"><b>cm</b></span></label>
+        <label class="fld"><span>Pecho</span><span class="unit"><input id="m-pecho" type="text" inputmode="decimal" autocomplete="off" placeholder="—"><b>cm</b></span></label>
+        <label class="fld"><span>Brazo</span><span class="unit"><input id="m-brazo" type="text" inputmode="decimal" autocomplete="off" placeholder="—"><b>cm</b></span></label>
+        <label class="fld"><span>Muslo</span><span class="unit"><input id="m-muslo" type="text" inputmode="decimal" autocomplete="off" placeholder="—"><b>cm</b></span></label>
+      </div>
+      <label class="fld"><span>Nota (opcional)</span><input id="m-nota" type="text" autocomplete="off" placeholder="Cómo te sentiste, dormiste mal, ciclo…"></label>
+      <div class="row">
+        <button type="button" class="btn pri grow" id="m-save"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" /> <path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7" /> <path d="M7 3v4a1 1 0 0 0 1 1h7" /></svg>Guardar medición</button>
+        <button type="button" class="btn danger" id="m-del" hidden><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 11v6" /> <path d="M14 11v6" /> <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" /> <path d="M3 6h18" /> <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" /></svg>Borrar</button>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="h-ev">
+      <h2 id="h-ev"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16" /> <path d="m19 9-5 5-4-4-3 3" /></svg>Evolución</h2>
+      <div class="mg" id="charts"></div>
+      <p class="sub" id="evnote"></p>
+    </section>
+
+    <section class="card" aria-labelledby="h-hist">
+      <h2 id="h-hist"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1" /> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" /> <path d="M12 11h4" /> <path d="M12 16h4" /> <path d="M8 11h.01" /> <path d="M8 16h.01" /></svg>Historial</h2>
+      <div class="scroll"><table class="tb" id="hist"></table></div>
+      <p class="sub">Toca una fila para corregirla.</p>
+    </section>
+
+    <section class="card" aria-labelledby="h-how">
+      <h2 id="h-how"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" /> <path d="M12 16v-4" /> <path d="M12 8h.01" /></svg>Cómo medir para que sea comparable</h2>
+      <details class="fold"><summary><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18" /> <path d="m19 8 3 8a5 5 0 0 1-6 0zV7" /> <path d="M3 7h1a17 17 0 0 0 8-2 17 17 0 0 0 8 2h1" /> <path d="m5 8 3 8a5 5 0 0 1-6 0zV7" /> <path d="M7 21h10" /></svg>Báscula inteligente</summary><div>
+        <p>La grasa que calcula una báscula (por bioimpedancia) cambia con el agua del cuerpo, así que fíjate más en la tendencia que en un día suelto.</p>
+        <p>Pésate siempre igual: por la mañana, después de ir al baño y antes de comer o beber, descalzo y con los pies secos, en el mismo sitio del suelo y sin ropa pesada.</p>
+        <p>Evita pesarte justo tras entrenar, con mucho calor o después de una cena muy salada: retienes agua y el dato sale raro.</p>
+      </div></details>
+      <details class="fold"><summary><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z" /> <path d="m14.5 12.5 2-2" /> <path d="m11.5 9.5 2-2" /> <path d="m8.5 6.5 2-2" /> <path d="m17.5 15.5 2-2" /></svg>Dónde poner la cinta</summary><div>
+        <p><b>Cintura:</b> a la altura del ombligo, tras soltar el aire, sin meter tripa.</p>
+        <p><b>Cadera:</b> por la parte más ancha de los glúteos, con la cinta horizontal.</p>
+        <p><b>Pecho:</b> por debajo de las axilas y sobre los pezones, con los brazos relajados.</p>
+        <p><b>Brazo:</b> el mismo brazo siempre, relajado, en el punto medio entre el hombro y el codo.</p>
+        <p><b>Muslo:</b> la misma pierna, de pie, en la parte alta, justo bajo el pliegue del glúteo.</p>
+        <p>La cinta ajustada pero sin apretar la piel, y mide siempre sobre piel o ropa muy fina. Si puedes, que te ayude otra persona.</p>
+      </div></details>
+    </section>
+  </div>
+
+  <!-- ======================= FOTOS ======================= -->
+  <div class="pn" id="pn-fotos" hidden>
+    <section class="card" aria-labelledby="h-fo">
+      <h2 id="h-fo"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z" /> <circle cx="12" cy="13" r="3" /></svg>Fotos de progreso</h2>
+      <p class="sub">Las fotos se quedan solo en este móvil. Si quieres llevarlas a otro, entran en la copia de seguridad.</p>
+      <div class="row"><button type="button" class="btn pri grow" id="b-cam"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z" /> <circle cx="12" cy="13" r="3" /></svg>Hacer las fotos con la guía</button></div>
+      <p class="sub">La cámara te enseña una silueta o tu foto anterior encima para que te coloques igual. Si prefieres, toca un hueco de abajo para añadir una foto de la galería.</p>
+    </section>
+    <div class="pn" id="sessions"></div>
+    <section class="card" aria-labelledby="h-cmp">
+      <h2 id="h-cmp"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2" /> <path d="M12 3v18" /></svg>Antes y después</h2>
+      <div id="cmpbox" class="cmpw"></div>
+    </section>
+  </div>
+
+  <!-- ======================= GUÍA ======================= -->
+  <div class="pn" id="pn-guia" hidden>
+    <p class="note"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" /> <circle cx="12" cy="12" r="6" /> <circle cx="12" cy="12" r="2" /></svg><span><b>Lo importante no es la foto perfecta, sino que todas se parezcan.</b> Mismo sitio, misma distancia, misma luz, misma hora y misma ropa. Así, al compararlas, lo único distinto eres tú.</span></p>
+
+    <section class="card" aria-labelledby="h-g1">
+      <h2 id="h-g1"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2" /> <path d="M12 18h.01" /></svg>Prepara tu rincón (una sola vez)</h2>
+      <div id="g-setup"></div>
+      <ol class="n">
+        <li><div><b>Elige la pared.</b><span>Lisa y clara, sin cuadros ni desorden, y con luz repartida (una ventana al lado o enfrente, sin sol directo ni la luz detrás de ti).</span></div></li>
+        <li><div><b>Marca el suelo con cinta.</b><span>Una marca para los talones y otra, a unos 2,5 metros, para el pie del móvil. Así cada vez te pones en el mismo punto.</span></div></li>
+        <li><div><b>Apoya el móvil recto.</b><span>En vertical, a la altura del ombligo o del pecho (entre 1 y 1,2 m), sobre una estantería, una silla o un trípode. Si está inclinado hacia arriba o abajo, las piernas y el torso salen deformados.</span></div></li>
+        <li><div><b>Usa siempre la misma cámara.</b><span>La trasera con el temporizador de 10 segundos da mejor calidad; la delantera te deja verte y colocarte con la silueta. Elige una y no la cambies. Usa el zoom 1x, sin gran angular.</span></div></li>
+      </ol>
+    </section>
+
+    <section class="card" aria-labelledby="h-g2">
+      <h2 id="h-g2"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="1" /> <path d="m9 20 3-6 3 6" /> <path d="m6 8 6 2 6-2" /> <path d="M12 10v4" /></svg>Las tres poses</h2>
+      <div class="poses" id="g-poses"></div>
+      <ul class="ck" style="margin-top:4px">
+        <li><span><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg></span><div><b>Frente.</b> Pies a la anchura de la cadera con los talones en la marca, brazos sueltos y un poco separados del cuerpo, mirada al frente.</div></li>
+        <li><span><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg></span><div><b>Lado.</b> Siempre el mismo costado hacia la cámara. Brazos colgando relajados o cruzados sobre el pecho, pero siempre igual. Mira al frente, no a la cámara.</div></li>
+        <li><span><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg></span><div><b>Espalda.</b> De espaldas a la cámara, como en la de frente, con los hombros relajados y la cabeza neutra.</div></li>
+      </ul>
+      <p class="note"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" /> <path d="M12 16v-4" /> <path d="M12 8h.01" /></svg><span>En las tres: <b>no metas tripa, no saques pecho y no tenses los músculos.</b> Una foto relajada es la que mejor se compara con la siguiente.</span></p>
+    </section>
+
+    <section class="card" aria-labelledby="h-g3">
+      <h2 id="h-g3"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 5h8" /> <path d="M13 12h8" /> <path d="M13 19h8" /> <path d="m3 17 2 2 4-4" /> <path d="m3 7 2 2 4-4" /></svg>Antes de cada sesión de fotos</h2>
+      <ul class="ck" id="g-check"></ul>
+      <button type="button" class="btn pri" id="g-cam"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z" /> <circle cx="12" cy="13" r="3" /></svg>Abrir la cámara guiada</button>
+    </section>
+
+    <section class="card" aria-labelledby="h-g4">
+      <h2 id="h-g4"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 2v3" /> <path d="M16 2v3" /> <rect x="3" y="3" width="18" height="18" rx="2" /> <path d="M3 9h18" /> <path d="M8 13h.01" /> <path d="M12 13h.01" /> <path d="M16 13h.01" /> <path d="M8 17h.01" /> <path d="M12 17h.01" /> <path d="M16 17h.01" /></svg>Cada cuánto</h2>
+      <p>Cada <b>2 semanas</b>, el mismo día de la semana y a la misma hora (por ejemplo, el sábado en ayunas), junto con la báscula y la cinta. Con menos tiempo apenas se nota el cambio.</p>
+      <p class="sub">La primera sesión es tu punto de partida: no la repitas por si «salió mal». Las siguientes se comparan con ella.</p>
+    </section>
+  </div>
+</div>
+
+<!-- cámara guiada -->
+<div class="cam" id="cam" hidden role="dialog" aria-modal="true" aria-label="Cámara guiada">
+  <div class="bar">
+    <button type="button" class="ib" id="c-x" aria-label="Cerrar cámara"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18" /> <path d="m6 6 12 12" /></svg></button>
+    <div class="ttl"><b id="c-pose">Frente</b><small id="c-step">Foto 1 de 3</small></div>
+    <button type="button" class="ib" id="c-flip" aria-label="Cambiar de cámara"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 19H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h5" /> <path d="M13 5h7a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-5" /> <circle cx="12" cy="12" r="3" /> <path d="m18 22-3-3 3-3" /> <path d="m6 2 3 3-3 3" /></svg></button>
+  </div>
+  <div class="stage" id="stage">
+    <video id="c-video" playsinline muted autoplay></video>
+    <div class="ov" id="c-ov"></div>
+    <div class="lv" id="c-lv"></div>
+    <img class="rev" id="c-rev" alt="Foto hecha" hidden>
+    <div class="cd" id="c-cd" aria-live="assertive"></div>
+    <div class="fl" id="c-fl"></div>
+    <div class="msg" id="c-msg" hidden></div>
+  </div>
+  <div class="foot">
+    <div class="ovm" id="c-ovm" role="group" aria-label="Guía sobre la imagen">
+      <button type="button" data-m="sil" aria-pressed="true">Silueta</button>
+      <button type="button" data-m="ant" aria-pressed="false">Mi foto anterior</button>
+      <button type="button" data-m="none" aria-pressed="false">Nada</button>
+    </div>
+    <div class="acts" id="c-live">
+      <button type="button" class="cb" id="c-t10"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><line x1="10" x2="14" y1="2" y2="2" /> <line x1="12" x2="15" y1="14" y2="11" /> <circle cx="12" cy="14" r="8" /></svg>En 10 s</button>
+      <button type="button" class="cb g" id="c-now">Ahora</button>
+      <button type="button" class="cb g" id="c-skip">Saltar</button>
+    </div>
+    <div class="acts" id="c-review" hidden>
+      <button type="button" class="cb g" id="c-redo"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" /> <path d="M3 3v5h5" /></svg>Repetir</button>
+      <button type="button" class="cb ok" id="c-ok"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>Guardar</button>
+    </div>
+  </div>
+</div>
+<input type="file" id="gal" accept="image/*" hidden>
+<div class="lbx" id="lbx" hidden role="dialog" aria-modal="true" aria-label="Foto">
+  <div class="bar"><b id="lb-t"></b><button type="button" class="btn sm" id="lb-x"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18" /> <path d="m6 6 12 12" /></svg>Cerrar</button></div>
+  <img id="lb-img" alt="">
+  <div class="acts"><button type="button" class="btn sm" id="lb-re"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2" ry="2" /> <circle cx="9" cy="9" r="2" /> <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" /></svg>Cambiar</button><button type="button" class="btn sm danger" id="lb-del"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 11v6" /> <path d="M14 11v6" /> <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" /> <path d="M3 6h18" /> <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" /></svg>Borrar</button></div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+<script src="icons.js"></script>
+<script src="store.js"></script>
+<script src="medidas.js"></script>
+<script>if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(function(){});}</script>
+</body></html>

@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>Resumen para la entrenadora · Entreno</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Entreno">
+<meta name="theme-color" content="#f2f4fb" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0b0e20" media="(prefers-color-scheme: dark)">
+<link rel="stylesheet" href="app.css">
+<style>
+.kp{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.kp div{background:var(--bg);border-radius:16px;padding:10px 12px;display:grid;gap:2px}
+.kp b{font:800 1.5rem var(--f-num);letter-spacing:-.03em;line-height:1.1} .kp span{font-size:.78rem;color:var(--muted)}
+.wk{display:grid;grid-template-columns:auto repeat(3,minmax(0,1fr));gap:6px;align-items:center}
+.wk .h{font-weight:800;font-size:.85rem;color:var(--muted)}
+.wk .c{border-radius:12px;background:var(--bg);text-align:center;padding:8px 4px;font-weight:800;font-size:.9rem;line-height:1.2}
+.wk .c small{display:block;font-weight:700;color:var(--muted);font-size:.7rem}
+.wk .c.ok{background:var(--bsoft);color:var(--ok)} .wk .c.mid{background:var(--soft)}
+h3.dayh{font-size:1rem;margin-top:6px}
+td small{display:block;color:var(--muted);font-size:.72rem;white-space:normal;max-width:9em;margin-left:auto;line-height:1.15}
+td.nm{white-space:normal!important;max-width:11em;font-weight:700;line-height:1.2}
+.pts{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+.pts li{display:flex;gap:12px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--line)}
+.pts li:last-child{border:0}
+.pts input{width:24px;height:24px;margin:2px 0 0;accent-color:var(--a);flex:none}
+.pts label{flex:1;cursor:pointer;font-size:.95rem}
+.fo{display:grid;grid-template-columns:auto repeat(3,minmax(0,1fr));gap:6px;align-items:center}
+.fo img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:10px;background:var(--bg)}
+.fo .l{font-size:.78rem;font-weight:800;color:var(--muted);writing-mode:vertical-rl;transform:rotate(180deg);text-align:center}
+.fo .e{aspect-ratio:3/4;border-radius:10px;border:2px dashed var(--line);display:grid;place-items:center;color:var(--muted);font-size:.72rem}
+.chk{display:flex;gap:12px;align-items:center;min-height:48px;cursor:pointer}
+.chk input{width:24px;height:24px;accent-color:var(--a)}
+.who{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.who input{flex:1;min-width:140px}
+.psub{display:none}
+@media print{.psub{display:block}.pts input{display:none}.pts li.off{display:none}.fld textarea{border:1px solid #bbb;min-height:0}}
+</style></head><body>
+<div class="wrap">
+  <header class="top">
+    <a class="back" href="./"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7" /> <path d="M19 12H5" /></svg>Inicio</a>
+    <h1>Resumen para la entrenadora</h1>
+    <p class="noprint">Se rellena solo con lo que has apuntado. Enséñaselo, imprímelo como PDF o envíaselo como texto.</p>
+    <p class="psub" id="psub"></p>
+  </header>
+  <noscript><p class="nojs">Esta página necesita JavaScript. Ábrela desde la app instalada o con Chrome o Safari.</p></noscript>
+
+  <section class="card noprint" aria-labelledby="h-act">
+    <h2 id="h-act"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" /> <path d="M14 2v5a1 1 0 0 0 1 1h5" /> <path d="M10 9H8" /> <path d="M16 13H8" /> <path d="M16 17H8" /></svg>Sacar el resumen</h2>
+    <label class="fld"><span>Nombre en el resumen</span><input id="nombre" type="text" autocomplete="off" placeholder="Emilio"></label>
+    <div class="row">
+      <button type="button" class="btn pri grow" id="b-print"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" /> <path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6" /> <rect x="6" y="14" width="12" height="8" rx="1" /></svg>Imprimir o guardar PDF</button>
+      <button type="button" class="btn grow" id="b-share"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="3" /> <circle cx="6" cy="12" r="3" /> <circle cx="18" cy="19" r="3" /> <line x1="8.59" x2="15.42" y1="13.51" y2="17.49" /> <line x1="15.41" x2="8.59" y1="6.51" y2="10.49" /></svg>Enviar como texto</button>
+      <button type="button" class="btn grow" id="b-copy"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /> <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg>Copiar texto</button>
+    </div>
+  </section>
+
+  <section class="card" aria-labelledby="h-c">
+    <h2 id="h-c"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 2v3" /> <path d="M16 2v3" /> <rect x="3" y="3" width="18" height="18" rx="2" /> <path d="M3 9h18" /> <path d="M8 13h.01" /> <path d="M12 13h.01" /> <path d="M16 13h.01" /> <path d="M8 17h.01" /> <path d="M12 17h.01" /> <path d="M16 17h.01" /></svg>Constancia</h2>
+    <div class="kp" id="kp"></div>
+    <div class="wk" id="wk"></div>
+    <p class="sub" id="cnote"></p>
+  </section>
+
+  <section class="card" aria-labelledby="h-p">
+    <h2 id="h-p"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.596 12.768a2 2 0 1 0 2.829-2.829l-1.768-1.767a2 2 0 0 0 2.828-2.829l-2.828-2.828a2 2 0 0 0-2.829 2.828l-1.767-1.768a2 2 0 1 0-2.829 2.829z" /> <path d="m2.5 21.5 1.4-1.4" /> <path d="m20.1 3.9 1.4-1.4" /> <path d="M5.343 21.485a2 2 0 1 0 2.829-2.828l1.767 1.768a2 2 0 1 0 2.829-2.829l-6.364-6.364a2 2 0 1 0-2.829 2.829l1.768 1.767a2 2 0 0 0-2.828 2.829z" /> <path d="m9.6 14.4 4.8-4.8" /></svg>Pesos por ejercicio</h2>
+    <div id="pesos"></div>
+  </section>
+
+  <section class="card" aria-labelledby="h-b">
+    <h2 id="h-b"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18" /> <path d="m19 8 3 8a5 5 0 0 1-6 0zV7" /> <path d="M3 7h1a17 17 0 0 0 8-2 17 17 0 0 0 8 2h1" /> <path d="m5 8 3 8a5 5 0 0 1-6 0zV7" /> <path d="M7 21h10" /></svg>Cuerpo</h2>
+    <div id="cuerpo"></div>
+  </section>
+
+  <section class="card" aria-labelledby="h-f">
+    <h2 id="h-f"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z" /> <circle cx="12" cy="13" r="3" /></svg>Fotos de progreso</h2>
+    <label class="chk noprint"><input type="checkbox" id="incf"><span><b>Incluir la primera y la última sesión de fotos</b><br><small class="sub">Por privacidad, no se muestran hasta que lo marques.</small></span></label>
+    <div id="fotos"></div>
+  </section>
+
+  <section class="card" aria-labelledby="h-n">
+    <h2 id="h-n"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z" /> <path d="M7 11h10" /> <path d="M7 15h6" /> <path d="M7 7h8" /></svg>Para comentar con ella</h2>
+    <ul class="pts" id="pts"></ul>
+    <label class="fld"><span>Tus notas y dudas</span><textarea id="notas" placeholder="Molestias, ejercicios que cuestan, horarios, objetivos…"></textarea></label>
+    <p class="sub noprint">Los puntos de arriba salen de comparar las cifras de los PDF de comidas (revisión automática, no es consejo médico): marca los que quieras llevar.</p>
+  </section>
+</div>
+<div class="toast" id="toast" role="status"></div>
+<script src="icons.js"></script>
+<script src="store.js"></script>
+<script src="plan.js"></script>
+<script src="resumen.js"></script>
+<script>if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(function(){});}</script>
+</body></html>

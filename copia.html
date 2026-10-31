@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>Copia de seguridad · Entreno</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Entreno">
+<meta name="theme-color" content="#f2f4fb" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0b0e20" media="(prefers-color-scheme: dark)">
+<link rel="stylesheet" href="app.css">
+<style>
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.st{background:var(--bg);border-radius:16px;padding:12px 14px;display:grid;gap:2px}
+.st b{font:800 1.6rem var(--f-num);letter-spacing:-.03em;line-height:1.1}
+.st span{font-size:.82rem;color:var(--muted)}
+.chk{display:flex;gap:12px;align-items:flex-start;min-height:48px;padding:6px 0;cursor:pointer}
+.chk input{width:24px;height:24px;margin:2px 0 0;accent-color:var(--a);flex:none}
+.chk b{display:block}
+.chk small{color:var(--muted)}
+.res{display:grid;gap:8px}
+ol.steps{margin:0;padding-left:1.2em;display:grid;gap:6px}
+input[type=file]{position:absolute;opacity:0;width:1px;height:1px}
+</style></head><body>
+<div class="wrap">
+  <header class="top">
+    <a class="back" href="./"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7" /> <path d="M19 12H5" /></svg>Inicio</a>
+    <h1>Copia de seguridad</h1>
+    <p>Todo lo que apuntas se guarda solo en este móvil. Aquí lo guardas en un archivo para no perderlo o pasarlo a otro móvil.</p>
+  </header>
+
+  <noscript><p class="nojs">Esta página necesita JavaScript. Ábrela desde la app instalada o con Chrome o Safari.</p></noscript>
+
+  <section class="card" aria-labelledby="h-now">
+    <h2 id="h-now"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3" /> <path d="M3 5V19A9 3 0 0 0 21 19V5" /> <path d="M3 12A9 3 0 0 0 21 12" /></svg>Ahora en este móvil</h2>
+    <div class="stats" id="stats"></div>
+    <p class="sub" id="last"></p>
+    <p class="note ok" id="persist" hidden><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" /> <path d="m9 12 2 2 4-4" /></svg><span></span></p>
+  </section>
+
+  <section class="card" aria-labelledby="h-exp">
+    <h2 id="h-exp"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V3" /> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /> <path d="m7 10 5 5 5-5" /></svg>Guardar una copia</h2>
+    <p class="sub">Genera un archivo con tus series, pesos, medidas, notas y (si quieres) las fotos. Guárdalo en Drive, iCloud, el correo o envíatelo por WhatsApp.</p>
+    <label class="chk"><input type="checkbox" id="incfotos" checked><span><b>Incluir las fotos de progreso</b><small id="fotoinfo">Hacen el archivo más grande.</small></span></label>
+    <div class="row">
+      <button type="button" class="btn pri grow" id="bshare"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="3" /> <circle cx="6" cy="12" r="3" /> <circle cx="18" cy="19" r="3" /> <line x1="8.59" x2="15.42" y1="13.51" y2="17.49" /> <line x1="15.41" x2="8.59" y1="6.51" y2="10.49" /></svg>Guardar copia</button>
+      <button type="button" class="btn grow" id="bdown"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V3" /> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /> <path d="m7 10 5 5 5-5" /></svg>Descargar archivo</button>
+    </div>
+    <p class="res" id="expres" aria-live="polite"></p>
+  </section>
+
+  <section class="card" aria-labelledby="h-imp">
+    <h2 id="h-imp"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12" /> <path d="m17 8-5-5-5 5" /> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /></svg>Recuperar una copia</h2>
+    <p class="sub">Sirve para un móvil nuevo o si se borraron los datos. No borra nada de lo que ya tengas: añade lo del archivo y, si algo coincide, gana el archivo.</p>
+    <label class="btn grow" for="file" tabindex="0" id="pick"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12" /> <path d="m17 8-5-5-5 5" /> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /></svg>Elegir archivo de copia</label>
+    <input type="file" id="file" accept=".json,application/json">
+    <div class="res" id="impres" aria-live="polite"></div>
+  </section>
+
+  <section class="card" aria-labelledby="h-tips">
+    <h2 id="h-tips"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5" /> <path d="M9 18h6" /> <path d="M10 22h4" /></svg>Cuándo guardar</h2>
+    <ol class="steps">
+      <li>Una vez a la semana, por ejemplo el domingo al hacer la compra.</li>
+      <li>Siempre antes de cambiar de móvil, borrar datos del navegador o desinstalar la app.</li>
+      <li>En el móvil nuevo: abre la web, instala el icono y aquí pulsa «Elegir archivo de copia».</li>
+    </ol>
+    <p class="note"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" /> <path d="M12 16v-4" /> <path d="M12 8h.01" /></svg><span>Cada móvil guarda lo suyo: si entráis los dos desde el mismo teléfono se mezclan los datos, y si cada uno usa el suyo, cada copia es de su móvil.</span></p>
+  </section>
+</div>
+<div class="toast" id="toast" role="status"></div>
+<script src="icons.js"></script>
+<script src="store.js"></script>
+<script>
+(function(){
+  var $=EN.$, esc=EN.esc;
+  function toast(t){ var e=$('#toast'); e.textContent=t; e.classList.add('on'); clearTimeout(toast.t); toast.t=setTimeout(function(){e.classList.remove('on');},2600); }
+
+  function count(S, med){
+    var r={series:0,pesos:0,sesiones:0};
+    Object.keys(S||{}).forEach(function(k){
+      if(/^c:w\d+d\d+-e\d+-s\d+$/.test(k)) r.series++;
+      else if(/^c:w\d+d\d+-done$/.test(k)) r.sesiones++;
+      else if(/^v:w\d+d\d+-e\d+-kg-/.test(k) && S[k]!=='') r.pesos++;
+    });
+    r.medidas=Object.keys(med||{}).length; return r;
+  }
+  function statCell(n,l){ return '<div class="st"><b>'+n+'</b><span>'+l+'</span></div>'; }
+  function paint(){
+    var c=count(EN.get(EN.K.rut,{}),EN.get(EN.K.med,{}));
+    EN.fotos.count().then(function(nf){
+      $('#stats').innerHTML=statCell(c.sesiones,'sesiones terminadas')+statCell(c.series,'series marcadas')+statCell(c.pesos,'pesos apuntados')+statCell(c.medidas,'mediciones')+statCell(nf,'fotos');
+      $('#fotoinfo').textContent= nf? nf+(nf===1?' foto guardada.':' fotos guardadas.')+' Hacen el archivo más grande.' : 'Aún no hay fotos.';
+      if(!nf) $('#incfotos').checked=false;
+    });
+    var l=EN.get(EN.K.copia,null);
+    $('#last').textContent= l&&l.fecha ? 'Última copia: '+EN.fdate(l.fecha.slice(0,10),true)+(EN.days(l.fecha.slice(0,10))>0?' (hace '+EN.days(l.fecha.slice(0,10))+' días).':' (hoy).') : 'Todavía no has guardado ninguna copia.';
+  }
+  paint();
+  try{ if(navigator.storage&&navigator.storage.persisted){ navigator.storage.persisted().then(function(p){
+    var n=$('#persist'); n.hidden=false;
+    if(p){ n.querySelector('span').textContent='El navegador protege estos datos: no los borrará por falta de espacio.'; }
+    else { n.className='note warn'; n.querySelector('span').textContent='El navegador no garantiza conservar estos datos. Instala el icono en la pantalla de inicio y guarda copias de vez en cuando.'; EN.persist(); }
+  }); } }catch(e){}
+
+  /* ---------- guardar ---------- */
+  function build(withFotos){
+    var datos={};
+    EN.BACKUP_KEYS().forEach(function(k){ if(k===EN.K.copia) return; try{ datos[k]=JSON.parse(localStorage.getItem(k)); }catch(e){} });
+    return (withFotos?EN.fotos.all():Promise.resolve([])).then(function(f){
+      return {app:'entreno',v:1,creada:new Date().toISOString(),datos:datos,fotos:f.map(function(p){return {id:p.id,fecha:p.fecha,pose:p.pose,cam:p.cam||null,img:p.img};})};
+    });
+  }
+  function stamp(o){ EN.set(EN.K.copia,{fecha:new Date().toISOString(),fotos:o.fotos.length}); paint(); }
+  function fname(){ return 'entreno-copia-'+EN.today()+'.json'; }
+  function size(b){ return b<1048576? Math.max(1,Math.round(b/1024))+' KB' : (b/1048576).toFixed(1).replace('.',',')+' MB'; }
+  function done(o,blob,how){
+    stamp(o);
+    $('#expres').innerHTML='<span class="note ok">'+EN.ic('circle-check')+'<span>'+how+' <b>'+esc(fname())+'</b> ('+size(blob.size)+'). Incluye '+o.fotos.length+(o.fotos.length===1?' foto.':' fotos.')+'</span></span>';
+  }
+  function download(o){
+    var blob=new Blob([JSON.stringify(o)],{type:'application/json'}), a=document.createElement('a');
+    a.href=URL.createObjectURL(blob); a.download=fname(); document.body.appendChild(a); a.click();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); },4000); done(o,blob,'Archivo descargado:');
+  }
+  $('#bdown').addEventListener('click',function(){ build($('#incfotos').checked).then(download); });
+  $('#bshare').addEventListener('click',function(){
+    build($('#incfotos').checked).then(function(o){
+      var blob=new Blob([JSON.stringify(o)],{type:'application/json'}), file;
+      try{ file=new File([blob],fname(),{type:'application/json'}); }catch(e){ file=null; }
+      if(file&&navigator.canShare&&navigator.canShare({files:[file]})){
+        navigator.share({files:[file],title:'Copia de Entreno'}).then(function(){ done(o,blob,'Copia compartida:'); },function(err){ if(!err||err.name!=='AbortError') download(o); });
+      } else download(o);
+    }).catch(function(){ toast('No se pudo preparar la copia'); });
+  });
+
+  /* ---------- recuperar ---------- */
+  var pending=null;
+  $('#pick').addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); $('#file').click(); } });
+  $('#file').addEventListener('change',function(){
+    var f=this.files&&this.files[0]; var out=$('#impres'); pending=null; out.innerHTML='';
+    if(!f) return;
+    var rd=new FileReader();
+    rd.onload=function(){
+      var o; try{ o=JSON.parse(rd.result); }catch(e){ o=null; }
+      if(!o||o.app!=='entreno'||!o.datos||typeof o.datos!=='object'){ out.innerHTML='<span class="note warn">'+EN.ic('triangle-alert')+'<span>Este archivo no es una copia de Entreno.</span></span>'; return; }
+      pending=o; var c=count(o.datos[EN.K.rut],o.datos[EN.K.med]), nf=(o.fotos||[]).length;
+      out.innerHTML='<div class="stats">'+statCell(c.sesiones,'sesiones')+statCell(c.series,'series')+statCell(c.pesos,'pesos')+statCell(c.medidas,'mediciones')+statCell(nf,'fotos')+'</div>'+
+        '<p class="sub">Copia del '+esc(EN.fdate(String(o.creada||'').slice(0,10),true))+'.</p><button type="button" class="btn pri" id="dorestore">'+EN.ic('history')+'Restaurar en este móvil</button>';
+      $('#dorestore').addEventListener('click',restore);
+    };
+    rd.onerror=function(){ out.innerHTML='<span class="note warn">'+EN.ic('triangle-alert')+'<span>No se pudo leer el archivo.</span></span>'; };
+    rd.readAsText(f);
+  });
+
+  function ok(k){ return k===EN.K.rut||k===EN.K.comp||(k.indexOf('entreno:')===0&&k!==EN.K.copia); }
+  function restore(){
+    var o=pending; if(!o) return;
+    // copia de seguridad de lo actual, por si te arrepientes (solo datos pequeños, no fotos)
+    var undo={}; EN.BACKUP_KEYS().forEach(function(k){ undo[k]=localStorage.getItem(k); });
+    try{ localStorage.setItem('entreno-deshacer',JSON.stringify(undo)); }catch(e){}
+    Object.keys(o.datos).forEach(function(k){
+      if(!ok(k)) return; var inc=o.datos[k], cur=EN.get(k,null);
+      if(Array.isArray(inc)){ cur=Array.isArray(cur)?cur:[]; var seen={}; cur.forEach(function(x){seen[JSON.stringify(x)]=1;}); inc.forEach(function(x){ if(!seen[JSON.stringify(x)]) cur.push(x); }); EN.set(k,cur); }
+      else if(inc&&typeof inc==='object'){ cur=(cur&&typeof cur==='object'&&!Array.isArray(cur))?cur:{}; Object.keys(inc).forEach(function(x){ cur[x]=inc[x]; }); EN.set(k,cur); }
+      else if(inc!=null) EN.set(k,inc);
+    });
+    var fs=(o.fotos||[]).filter(function(p){ return p&&p.id&&p.img; }), chain=Promise.resolve(), n=0;
+    fs.forEach(function(p){ chain=chain.then(function(){ return EN.fotos.put({id:p.id,fecha:p.fecha,pose:p.pose,cam:p.cam||null,img:p.img}).then(function(){n++;}); }); });
+    chain.then(function(){
+      EN.persist(); paint(); pending=null;
+      $('#impres').innerHTML='<span class="note ok">'+EN.ic('circle-check')+'<span>Restaurado: datos de la rutina y medidas'+(n?' y '+n+(n===1?' foto':' fotos'):'')+'.</span></span><button type="button" class="btn sm" id="undo">'+EN.ic('rotate-ccw')+'Deshacer lo de la rutina y medidas</button>';
+      $('#undo').addEventListener('click',undoRestore);
+    }).catch(function(){ toast('Algo falló con las fotos; el resto sí se restauró'); paint(); });
+  }
+  function undoRestore(){
+    var u; try{ u=JSON.parse(localStorage.getItem('entreno-deshacer')||'null'); }catch(e){ u=null; }
+    if(!u){ toast('No hay nada que deshacer'); return; }
+    EN.BACKUP_KEYS().forEach(function(k){ if(!(k in u)&&k!==EN.K.copia) EN.del(k); });
+    Object.keys(u).forEach(function(k){ if(u[k]!=null) try{ localStorage.setItem(k,u[k]); }catch(e){} });
+    try{ localStorage.removeItem('entreno-deshacer'); }catch(e){}
+    paint(); $('#impres').innerHTML='<span class="note">'+EN.ic('info')+'<span>Deshecho. Las fotos añadidas se conservan.</span></span>';
+  }
+})();
+</script>
+<script>if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(function(){});}</script>
+</body></html>
